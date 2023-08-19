@@ -7,8 +7,6 @@ echo "| Please enter your configuration:          |"
 echo "--------------------------------------------"
 echo ""
 
-
-# Function to check if a file with a specific suffix exists
 file_exists() {
     local file_suffix=$1
     [[ -f locustfile${file_suffix}.py ]]
@@ -29,22 +27,22 @@ echo "Workload options:"
 echo "---------------------------------------------------"
 echo ""
 PS3="Please choose a locust file (enter the number): "
-options=("Default (locustfile.py)" "Option 1 (locustfile_1.py)" "Option 2 (locustfile_2.py)" "Option 3 (locustfile_3.py)")
+options=("Default (locustfile.py)" "Option 1 (locustfile_new.py)" "Option 2 (locustfile_2.py)" "Option 3 (locustfile_3.py)")
 select opt in "${options[@]}"; do
     case $REPLY in
-        1)
+        0)
             locust_file="locustfile.py"
             break
             ;;
-        2)
+        1)
             if file_exists "_1"; then
-                locust_file="locustfile_1.py"
+                locust_file="locustfile_new.py"
                 break
             else
-                echo "Option 1 (locustfile_1.py) not found. Please choose another option."
+                echo "Option 1 (locustfile_new.py) not found. Please choose another option."
             fi
             ;;
-        3)
+        2)
             if file_exists "_2"; then
                 locust_file="locustfile_2.py"
                 break
@@ -52,7 +50,7 @@ select opt in "${options[@]}"; do
                 echo "Option 2 (locustfile_2.py) not found. Please choose another option."
             fi
             ;;
-        4)
+        3)
             if file_exists "_3"; then
                 locust_file="locustfile_3.py"
                 break
