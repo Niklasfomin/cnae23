@@ -7,11 +7,6 @@ echo "| Please enter your configuration:          |"
 echo "--------------------------------------------"
 echo ""
 
-file_exists() {
-    local file_suffix=$1
-    [[ -f locustfile${file_suffix}.py ]]
-}
-
 # Prompt the user for the frontend address
 read -p "Enter the frontend address (e.g., 127.0.0.1): " FRONTEND_ADDR
 echo "---------------------------------------------------"
@@ -22,53 +17,14 @@ read -p "Enter the number of users: " USERS
 echo "---------------------------------------------------"
 echo ""
 
-# Prompt the user to choose a locust file
-echo "Workload options:"
-echo "---------------------------------------------------"
-echo ""
-PS3="Please choose a locust file (enter the number): "
-options=("Default (locustfile.py)" "Option 1 (locustfile_new.py)" "Option 2 (locustfile_2.py)" "Option 3 (locustfile_3.py)")
-select opt in "${options[@]}"; do
-    case $REPLY in
-        0)
-            locust_file="locustfile.py"
-            break
-            ;;
-        1)
-            if file_exists "_1"; then
-                locust_file="locustfile_new.py"
-                break
-            else
-                echo "Option 1 (locustfile_new.py) not found. Please choose another option."
-            fi
-            ;;
-        2)
-            if file_exists "_2"; then
-                locust_file="locustfile_2.py"
-                break
-            else
-                echo "Option 2 (locustfile_2.py) not found. Please choose another option."
-            fi
-            ;;
-        3)
-            if file_exists "_3"; then
-                locust_file="locustfile_3.py"
-                break
-            else
-                echo "Option 3 (locustfile_3.py) not found. Please choose another option."
-            fi
-            ;;
-        *)
-            echo "Invalid choice. Please select a valid option (1, 2, 3, or default)."
-            ;;
-    esac
-done
+# Set the locust file 
+locust_file="locustfile_new.py"
 
 echo "---------------------------------------------------"
 echo ""
 echo "Running locust script with the following configuration on ${FRONTEND_ADDR}:"
 echo ""
-echo "locust --host=\"http://${FRONTEND_ADDR}\" --headless -u \"${USERS:-10}\" -f ${options} 2>&1"
+echo "locust --host=\"http://${FRONTEND_ADDR}\" --headless -u \"${USERS:-10}\" -f ${locust_file} 2>&1"
 
 sleep 3
 
